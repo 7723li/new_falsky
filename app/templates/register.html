@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript">
+    function set_Email(email_address, pr){
+        account=prompt('Enter your '+pr+' email account here')
+        email=account+email_address
+        // openid为字符型,python->email.find('<···>'),若不存在返回-1
+        u = email.search('.com')
+        if (u == -1) {
+            // email requires username
+            user = prompt('Enter your ' + pr + ' address:')
+            email = email + user + '.com'
+        }
+        //获取name为login的表单
+        form = document.forms['register'];
+        //填充login表单中的openid元素
+        form.elements['email'].value = email;
+    }
+</script>
+
+<style type="text/css">
+	.Prompt{
+		margin: 10px;
+		font-size: 20px;
+	}
+	.register{
+		margin: 30px;
+	}
+</style>
+
+<form method="post" name="register" class="register">
+	{{form.hidden_tag()}}
+
+	<p class="Prompt">
+	enter your eamil here:{% for pr in providers %}
+          &nbsp;<a href="javascript:set_Email('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a>&nbsp;
+	{% endfor %}</p>
+
+	{{form.email(size=80)}}
+	<p class="Prompt">enter your nickname here:</p>
+	{{form.nickname(size=80)}}<br>
+	{{form.confirm}}
+</form>
+{% endblock %}

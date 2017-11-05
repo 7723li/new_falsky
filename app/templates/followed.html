@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if followed_num >1 %}
+	已关注
+	{% for followed in  followeds %}
+		{% if followed.nickname != user.nickname%}
+			<img src="{{user.avatar(20)}}"><a href="{{url_for('user',nickname=followed.nickname)}}">{{followed.nickname}}</a>
+		{% endif %}
+	{% endfor %}
+{% else %}
+	<p>还没有关注其他人。</p>
+{% endif %}
+
+{% endblock %}

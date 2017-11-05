@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if followers_num >1 %}
+	已被
+	{% for follower in  followers %}
+		{% if follower.nickname != user.nickname%}
+			<img src="{{user.avatar(20)}}"><a href="{{url_for('user',nickname=follower.nickname)}}">{{follower.nickname}}</a>
+		{% endif %}
+	{% endfor %}
+	关注
+{% else %}
+	<p>还没有关注者。</p>
+{% endif %}
+
+{% endblock %}

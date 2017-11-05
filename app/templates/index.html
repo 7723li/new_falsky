@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style type="text/css">
+	.hi{
+		margin-left: 80px;
+		margin-right: auto;
+	}
+</style>
+<div class="hi">
+{% if user.is_authenticated %}
+	<h1>Hi, {{user.nickname}}!</h1>
+{% else %}
+	<h1>Hi, Stranger!</h1>
+{% endif %}
+</div>
+{% if user.is_authenticated %}
+	<form action="" method="post" name="post">
+	    {{form.hidden_tag()}}
+	    <table>
+	        <tr>
+	            <td>Say something:</td>
+	            <td>{{ form.post }}</td>
+	            <td>
+	            {% for error in form.errors.post %}
+	            <span style="color: red;">[{{error}}]</span><br>
+	            {% endfor %}
+	            </td>
+	        </tr>
+	        <tr>
+	            <td></td>
+	            <td><input type="submit" value="Post!" class="btn btn-primary"></td>
+	            <td></td>
+	        </tr>
+	    </table>
+	</form>
+	<hr>
+	<ul class="posts">
+		{% for post in posts.items %}
+			<div class="postdiv">
+			<li class="post">
+		    	{% include 'post.html' %}
+		    </li>
+		    </div>
+		{% endfor %}
+	</ul>
+
+	{% if posts.has_prev %}<a href="{{ url_for('index', page = posts.prev_num) }}"><< Newer posts</a>{% else %}<< Newer posts{% endif %} |
+	{% if posts.has_next %}<a href="{{ url_for('index', page = posts.next_num) }}">Older posts >></a>{% else %}Older posts >>{% endif %}
+{% endif %}
+{% endblock %}
